@@ -1,0 +1,102 @@
+# =====================================================================
+# STEP 1: CREATE CONTRACT FILE
+# Consumer GET endpoint contract (contract-first, OpenAPI 3.0.3)
+# Java interfaces and models are generated from this file at build time.
+# =====================================================================
+openapi: 3.0.3
+info:
+  title: Consumer GET Service API
+  description: |
+    Contract for the consumer-facing GET endpoint.
+    Per the consumer agreement, the endpoint returns HTTP 200 with the
+    response body defined in `ConsumerResponse`.
+  version: 1.0.0
+  contact:
+    name: Consumer Service Team
+
+servers:
+  - url: http://localhost:8080
+    description: Local
+
+tags:
+  - name: Consumer
+    description: Consumer GET operations
+
+paths:
+  # ===================================================================
+  # STEP 2: DEFINE GET REQUEST STRUCTURE
+  # ===================================================================
+  /api/v1/consumer:
+    get:
+      tags:
+        - Consumer
+      summary: Fetch consumer data using query parameters a and b
+      operationId: getConsumerData
+      parameters:
+        - name: a
+          in: query
+          required: true
+          description: Query parameter a
+          schema:
+            type: string
+            example: "5"
+        - name: b
+          in: query
+          required: true
+          description: Query parameter b
+          schema:
+            type: string
+            example: "10"
+
+      # =================================================================
+      # STEP 3: DEFINE RESPONSE SPEC
+      # =================================================================
+      responses:
+        "200":
+          description: Successful response, as agreed with the consumer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsumerResponse"
+              example:
+                status: 200
+                message: "SUCCESS"
+                data:
+                  a: "5"
+                  b: "10"
+
+components:
+  schemas:
+    ConsumerResponse:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code mirrored in the body
+          example: 200
+        message:
+          type: string
+          description: Result message
+          example: "SUCCESS"
+        data:
+          $ref: "#/components/schemas/ConsumerData"
+
+    ConsumerData:
+      type: object
+      required:
+        - a
+        - b
+      properties:
+        a:
+          type: string
+          description: Echo of query parameter a
+          example: "5"
+        b:
+          type: string
+          description: Echo of query parameter b
+          example: "10"

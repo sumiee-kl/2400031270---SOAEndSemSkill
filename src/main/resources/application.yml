@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: consumer-get-service
+  web:
+    resources:
+      # Also serve classpath root so /openapi/contract.yaml is reachable
+      static-locations: classpath:/static/,classpath:/
+
+# Serve the hand-written contract in Swagger UI
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /openapi/contract.yaml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
